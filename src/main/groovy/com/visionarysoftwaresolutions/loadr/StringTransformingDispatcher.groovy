@@ -12,7 +12,9 @@ final class StringTransformingDispatcher<T> extends StaticDispatchActor<String> 
     private final File log
     private final Function<String, T> transformer
 
-    StringTransformingDispatcher(final Collection<Actor> saverActors, final File logFile, final Function<String, T> transformer) {
+    StringTransformingDispatcher( final Collection<Actor> saverActors,
+                                  final File logFile,
+                                  final Function<String, T> transformer ) {
         this.saverActors = saverActors.collect()
         this.log = logFile
         this.transformer = transformer

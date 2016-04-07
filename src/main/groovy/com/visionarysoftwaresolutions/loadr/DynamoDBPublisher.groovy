@@ -29,7 +29,7 @@ final class DynamoDBPublisher<T> extends StaticDispatchActor<T> {
             logFile.append("${Instant.now()}: Writing ${id} with size ${JsonOutput.toJson(id).bytes.length} \n")
             client.putItem(transformer.apply(id))
         } catch (final Exception e) {
-            final String message = String.format("%s: Failed to insert %s because %s %n", new Instant(), id, e.message)
+            final String message = String.format("%s: Failed to insert %s because %s %n", Instant.now(), id, e.message)
             logFile.append(message)
         }
     }
