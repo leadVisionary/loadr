@@ -14,7 +14,11 @@ final class DynamoDBPublisher<T> extends StaticDispatchActor<T> {
     private final Function<T, PutItemRequest> transformer
 
     DynamoDBPublisher(final AmazonDynamoDB client, final File logFile, Function<T, PutItemRequest> transformer) {
+        if (client == null) {
+            throw new IllegalArgumentException("Should not get null DynamoDB")
+        }
         this.client = client
+
         this.logFile = logFile
         this.transformer = transformer
     }
