@@ -7,15 +7,9 @@ import spock.lang.Shared
 import java.util.function.Function
 
 class DynamoDBPublisherSpec extends spock.lang.Specification {
-    @Shared AmazonDynamoDB client
-    @Shared File logFile
-    @Shared Function<String, PutItemRequest> transformer
-
-    def setup() {
-        client = Mock(AmazonDynamoDB)
-        logFile = Mock(File)
-        transformer = Mock(Function)
-    }
+    @Shared AmazonDynamoDB client = Mock(AmazonDynamoDB)
+    @Shared File logFile = Mock(File)
+    @Shared Function<String, PutItemRequest> transformer = Mock(Function)
 
     def "rejects null constructor arguments"() {
         when: "I try to construct with null client"

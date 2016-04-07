@@ -18,8 +18,13 @@ final class DynamoDBPublisher<T> extends StaticDispatchActor<T> {
             throw new IllegalArgumentException("Should not get null DynamoDB")
         }
         this.client = client
-
+        if (logFile == null) {
+            throw new IllegalArgumentException("Should not get null log")
+        }
         this.logFile = logFile
+        if (transformer == null) {
+            throw new IllegalArgumentException("Should not get null transformer")
+        }
         this.transformer = transformer
     }
 
