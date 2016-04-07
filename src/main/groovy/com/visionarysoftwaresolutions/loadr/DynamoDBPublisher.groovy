@@ -30,10 +30,6 @@ final class DynamoDBPublisher<T> extends StaticDispatchActor<T> {
 
     @Override
     void onMessage(final T id) {
-        handleNextMessage(id)
-    }
-
-    void handleNextMessage(final T id) {
         try {
             logFile.append("${Instant.now()}: Writing ${id} with size ${JsonOutput.toJson(id).bytes.length} \n")
             client.putItem(transformer.apply(id))
