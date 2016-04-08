@@ -20,6 +20,8 @@ class RandomlySelectingActorPoolSpec extends spock.lang.Specification {
     def "can create actors"() {
         given: "a supplier of Actors"
             final Supplier<StaticDispatchActor<?>> sup = Mock(Supplier)
+        and: "a mock dispatch actor"
+            final StaticDispatchActor<String> dispatcher = Mock(StaticDispatchActor)
         and: "a number of actors desired"
             final int pubs = 1
         when: "I make a RandomlySelectingActorPool"
@@ -27,8 +29,12 @@ class RandomlySelectingActorPoolSpec extends spock.lang.Specification {
         and: "I ask for an actor"
             final StaticDispatchActor<?> actor = toTest.get()
         then: "the supplier is invoked"
-            1 * sup.get() << Mock(StaticDispatchActor)
-        and: "the actor is active"
-            actor.isActive()
+            1 * sup.get() >>  dispatcher
+        and: "the parallel group is set"
+            1 * dispatcher.setParallelGroup(_)
+        and: "the actor is started"
+            1 * dispatcher.start()
+        and: "the expected actor is returned"
+            actor == dispatcher
     }
 }

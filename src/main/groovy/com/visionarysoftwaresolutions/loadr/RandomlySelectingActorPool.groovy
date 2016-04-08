@@ -7,6 +7,7 @@ import groovyx.gpars.scheduler.FJPool
 import java.util.function.Supplier
 
 final class RandomlySelectingActorPool<T> implements Supplier<StaticDispatchActor<T>> {
+    private static final Random RANDOMIZER = new Random()
     private final Collection<StaticDispatchActor<T>> actors
 
     RandomlySelectingActorPool(final int numPublishers,
@@ -31,7 +32,7 @@ final class RandomlySelectingActorPool<T> implements Supplier<StaticDispatchActo
 
     @Override
     StaticDispatchActor<T> get() {
-        final int nextIndex = (int) (Math.random() * (actors.size() - 1)) + 1
+        final int nextIndex = RANDOMIZER.nextInt(actors.size())
         final StaticDispatchActor<T> publisher = actors[nextIndex]
         if (!publisher.isActive()) {
             publisher.start()
