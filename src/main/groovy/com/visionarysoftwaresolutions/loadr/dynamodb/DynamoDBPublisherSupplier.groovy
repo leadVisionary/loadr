@@ -15,7 +15,13 @@ final class DynamoDBPublisherSupplier<T> implements Supplier<StaticDispatchActor
     private final Function<T, PutItemRequest> transformer
 
     DynamoDBPublisherSupplier(final Logger log, final Function<T, PutItemRequest> transformer) {
+        if (log == null) {
+            throw new IllegalArgumentException("should not get null log")
+        }
         this.log = log
+        if (transformer == null) {
+            throw new IllegalArgumentException("should not get null transformer")
+        }
         this.transformer = transformer
     }
 
