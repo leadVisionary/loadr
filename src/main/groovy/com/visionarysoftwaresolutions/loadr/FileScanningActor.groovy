@@ -12,6 +12,9 @@ final class FileScanningActor extends StaticDispatchActor<File> {
     private final StaticDispatchActor<String> transformer
 
     FileScanningActor(final StaticDispatchActor<String> transformer) {
+        if (transformer == null) {
+            throw new IllegalArgumentException("should not get null transformer")
+        }
         this.transformer = transformer
         def readerPool = new DefaultPGroup(new DefaultPool(true, 1))
         this.parallelGroup = readerPool
