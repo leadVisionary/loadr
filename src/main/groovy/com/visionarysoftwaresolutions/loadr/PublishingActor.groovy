@@ -10,6 +10,7 @@ final class PublishingActor<T> extends StaticDispatchActor<T> {
         if (command == null) {
             throw new IllegalArgumentException("Should not get null command")
         }
+        this.command = command
     }
 
     @Override
