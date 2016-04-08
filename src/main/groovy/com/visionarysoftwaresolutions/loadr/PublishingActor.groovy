@@ -2,9 +2,10 @@ package com.visionarysoftwaresolutions.loadr
 
 import groovyx.gpars.actor.StaticDispatchActor
 
-final class DynamoDBPublisher<T> extends StaticDispatchActor<T> {
+final class PublishingActor<T> extends StaticDispatchActor<T> {
     private final PublishCommand<T> command
-    DynamoDBPublisher(final PublishCommand<T> command) {
+
+    PublishingActor(final PublishCommand<T> command) {
         if (command == null) {
             throw new IllegalArgumentException("Should not get null command")
         }

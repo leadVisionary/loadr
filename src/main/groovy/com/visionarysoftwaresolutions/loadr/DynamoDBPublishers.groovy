@@ -32,7 +32,7 @@ final class DynamoDBPublishers<T> implements Supplier<Collection<StaticDispatchA
         def actors = []
         numPublishers.times {
             final AmazonDynamoDB db = new AmazonDynamoDBAsyncClient();
-            final StaticDispatchActor<T> publisher = new DynamoDBPublisher(new DynamoDBPublishCommand(db, log, transformer))
+            final StaticDispatchActor<T> publisher = new PublishingActor(new DynamoDBPublishCommand(db, log, transformer))
             publisher.parallelGroup = publisherPool
             actors << publisher
         }
