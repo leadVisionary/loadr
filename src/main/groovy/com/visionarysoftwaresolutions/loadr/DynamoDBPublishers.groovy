@@ -12,30 +12,30 @@ import org.slf4j.Logger
 import java.util.function.Function
 import java.util.function.Supplier
 
-final class DynamoDBPublishers<T> implements Supplier<Collection<StaticDispatchActor<T>>> {
-    private final int numPublishers
-    private final Logger log
-    private final Function<T, PutItemRequest> transformer
+final class DynamoDBPublishers<T> implements Supplier<StaticDispatchActor<T>> {
+    private final Collection<StaticDispatchActor<T>> actors
 
     DynamoDBPublishers(final int numPublishers,
                        final Logger log,
                        final Function<T, PutItemRequest> transformer) {
-        this.numPublishers = numPublishers
-        this.log = log
-        this.transformer = transformer
-    }
-
-
-    @Override
-    Collection<StaticDispatchActor<T>> get() {
         def publisherPool = new DefaultPGroup(new FJPool(numPublishers))
-        def actors = []
+        actors = []
         numPublishers.times {
             final AmazonDynamoDB db = new AmazonDynamoDBAsyncClient();
             final StaticDispatchActor<T> publisher = new PublishingActor(new DynamoDBPublishCommand(db, log, transformer))
             publisher.parallelGroup = publisherPool
             actors << publisher
         }
-        actors
+    }
+
+
+    @Override
+    StaticDispatchActor<T> get() {
+        final int nextIndex = (int) (Math.random() * (actors.size() - 1)) + 1
+        final StaticDispatchActor<T> publisher = actors[nextIndex]
+        if (!publisher.isActive()) {
+            publisher.start()
+        }
+        publisher
     }
 }

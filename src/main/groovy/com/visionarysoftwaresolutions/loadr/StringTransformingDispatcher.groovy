@@ -10,14 +10,16 @@ import java.util.function.Supplier
 
 
 final class StringTransformingDispatcher<T> extends StaticDispatchActor<String> {
-    private final Collection<Actor> saverActors
+    private final Collection<StaticDispatchActor<T>> saverActors
+    private final Supplier<StaticDispatchActor<T>> supplier
     private final Logger log
     private final Function<String, T> transformer
 
-    StringTransformingDispatcher(final Supplier<Collection<Actor>> supplier,
+    StringTransformingDispatcher(final Supplier<StaticDispatchActor<T>> supplier,
                                  final Logger logFile,
                                  final Function<String, T> transformer ) {
-        this.saverActors = supplier.get()
+        this.saverActors = []
+        this.supplier = supplier
         this.log = logFile
         this.transformer = transformer
     }
@@ -35,12 +37,9 @@ final class StringTransformingDispatcher<T> extends StaticDispatchActor<String> 
 
     private void handleNextMessage(final String message) {
         try {
-            final int nextIndex = (int) (Math.random() * (saverActors.size() - 1)) + 1
-            final Actor publisher = saverActors[nextIndex]
-            if (!publisher.isActive()) {
-                publisher.start()
-            }
+            final StaticDispatchActor<T> publisher = supplier.get()
             publisher << transformer.apply(message)
+            saverActors << publisher
         } catch (final Exception ex) {
             log.error(String.format("%s: Failed to write %s because %s %n%n", Instant.now(), message, ex))
         }

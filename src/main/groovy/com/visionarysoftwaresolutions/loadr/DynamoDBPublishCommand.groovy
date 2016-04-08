@@ -2,6 +2,7 @@ package com.visionarysoftwaresolutions.loadr
 
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB
 import com.amazonaws.services.dynamodbv2.model.PutItemRequest
+import com.visionarysoftwaresolutions.loadr.api.PublishCommand
 import groovy.json.JsonOutput
 import org.slf4j.Logger
 

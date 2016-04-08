@@ -1,5 +1,6 @@
 package com.visionarysoftwaresolutions.loadr
 
+import com.visionarysoftwaresolutions.loadr.api.PublishCommand
 import groovyx.gpars.actor.StaticDispatchActor
 
 final class PublishingActor<T> extends StaticDispatchActor<T> {
