@@ -11,6 +11,14 @@ final class RandomlySelectingActorPool<T> implements Supplier<StaticDispatchActo
 
     RandomlySelectingActorPool(final int numPublishers,
                                final Supplier<StaticDispatchActor<T>> supplier) {
+        if (numPublishers < 0) {
+            throw new IllegalArgumentException("numPublishers should be > 0")
+        }
+
+        if(supplier == null) {
+            throw new IllegalArgumentException("should not get null supplier")
+        }
+
         def publisherPool = new DefaultPGroup(new FJPool(numPublishers))
         actors = []
         numPublishers.times {
