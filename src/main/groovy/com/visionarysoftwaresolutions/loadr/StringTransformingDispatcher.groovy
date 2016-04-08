@@ -2,6 +2,7 @@ package com.visionarysoftwaresolutions.loadr
 
 import groovyx.gpars.actor.Actor
 import groovyx.gpars.actor.StaticDispatchActor
+import org.slf4j.Logger
 
 import java.time.Instant
 import java.util.function.Function
@@ -9,12 +10,12 @@ import java.util.function.Function
 
 final class StringTransformingDispatcher<T> extends StaticDispatchActor<String> {
     private final Collection<Actor> saverActors
-    private final File log
+    final Logger log
     private final Function<String, T> transformer
 
-    StringTransformingDispatcher( final Collection<Actor> saverActors,
-                                  final File logFile,
-                                  final Function<String, T> transformer ) {
+    StringTransformingDispatcher(final Collection<Actor> saverActors,
+                                 final Logger logFile,
+                                 final Function<String, T> transformer ) {
         this.saverActors = saverActors.collect()
         this.log = logFile
         this.transformer = transformer
@@ -36,7 +37,7 @@ final class StringTransformingDispatcher<T> extends StaticDispatchActor<String> 
             final int nextIndex = (int) (Math.random() * (saverActors.size() - 1)) + 1
             saverActors[nextIndex] << transformer.apply(message)
         } catch (final Exception ex) {
-            log.append(String.format("%s: Failed to write %s because %s %n%n", Instant.now(), message, ex))
+            log.error(String.format("%s: Failed to write %s because %s %n%n", Instant.now(), message, ex))
         }
     }
 }
