@@ -18,9 +18,9 @@ public final class Loader {
         final Supplier<Collection<Actor>> savers = new DynamoDBPublishers(publishers, log, mapper)
         final Collection<Actor> saverActors = savers.get()
         saverActors*.start()
-        final StaticDispatchActor<String> transformer = new StringTransformingDispatcher(saverActors, log, stringTransform)
+        final StaticDispatchActor<String> transformer = new StringTransformingDispatcher(savers, log, stringTransform)
         transformer.start()
-        final java.io.FileReader reader = new java.io.FileReader(transformer)
+        final FileScanningActor reader = new FileScanningActor(transformer)
         new Loader(reader, source).load()
         reader.join()
     }

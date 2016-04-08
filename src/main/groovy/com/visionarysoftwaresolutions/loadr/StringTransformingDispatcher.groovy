@@ -6,17 +6,18 @@ import org.slf4j.Logger
 
 import java.time.Instant
 import java.util.function.Function
+import java.util.function.Supplier
 
 
 final class StringTransformingDispatcher<T> extends StaticDispatchActor<String> {
     private final Collection<Actor> saverActors
-    final Logger log
+    private final Logger log
     private final Function<String, T> transformer
 
-    StringTransformingDispatcher(final Collection<Actor> saverActors,
+    StringTransformingDispatcher(final Supplier<Collection<Actor>> supplier,
                                  final Logger logFile,
                                  final Function<String, T> transformer ) {
-        this.saverActors = saverActors.collect()
+        this.saverActors = supplier.get()
         this.log = logFile
         this.transformer = transformer
     }
@@ -35,7 +36,11 @@ final class StringTransformingDispatcher<T> extends StaticDispatchActor<String> 
     private void handleNextMessage(final String message) {
         try {
             final int nextIndex = (int) (Math.random() * (saverActors.size() - 1)) + 1
-            saverActors[nextIndex] << transformer.apply(message)
+            final Actor publisher = saverActors[nextIndex]
+            if (!publisher.isActive()) {
+                publisher.start()
+            }
+            publisher << transformer.apply(message)
         } catch (final Exception ex) {
             log.error(String.format("%s: Failed to write %s because %s %n%n", Instant.now(), message, ex))
         }

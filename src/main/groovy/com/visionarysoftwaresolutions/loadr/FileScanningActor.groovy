@@ -8,10 +8,10 @@ import java.util.stream.Stream
 
 import static java.nio.file.Files.lines
 
-final class FileReader extends StaticDispatchActor<File> {
+final class FileScanningActor extends StaticDispatchActor<File> {
     private final StaticDispatchActor<String> transformer
 
-    FileReader(final StaticDispatchActor<String> transformer) {
+    FileScanningActor(final StaticDispatchActor<String> transformer) {
         this.transformer = transformer
         def readerPool = new DefaultPGroup(new DefaultPool(true, 1))
         this.parallelGroup = readerPool
