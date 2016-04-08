@@ -17,7 +17,7 @@ public final class Loader {
                                                                   final Function<String, T> stringTransform) {
         final Supplier<StaticDispatchActor<T>> sup = new DynamoDBPublisherSupplier<T>(log, mapper)
         final Supplier<StaticDispatchActor<T>> savers = new RandomlySelectingActorPool(publishers, sup)
-        final StaticDispatchActor<String> transformer = new StringTransformingDispatcher(savers, log, stringTransform)
+        final StaticDispatchActor<String> transformer = new StringTransformingActor(savers, log, stringTransform)
         transformer.start()
         new Loader(new FileScanningActor(transformer), source).load()
     }

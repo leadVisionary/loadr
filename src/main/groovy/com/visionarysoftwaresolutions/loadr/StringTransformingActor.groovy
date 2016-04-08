@@ -9,15 +9,15 @@ import java.util.function.Function
 import java.util.function.Supplier
 
 
-final class StringTransformingDispatcher<T> extends StaticDispatchActor<String> {
+final class StringTransformingActor<T> extends StaticDispatchActor<String> {
     private final Collection<StaticDispatchActor<T>> saverActors
     private final Supplier<StaticDispatchActor<T>> supplier
     private final Logger log
     private final Function<String, T> transformer
 
-    StringTransformingDispatcher(final Supplier<StaticDispatchActor<T>> supplier,
-                                 final Logger logFile,
-                                 final Function<String, T> transformer ) {
+    StringTransformingActor(final Supplier<StaticDispatchActor<T>> supplier,
+                            final Logger logFile,
+                            final Function<String, T> transformer ) {
         this.saverActors = []
         this.supplier = supplier
         this.log = logFile
