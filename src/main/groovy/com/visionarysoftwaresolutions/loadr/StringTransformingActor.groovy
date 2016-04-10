@@ -15,8 +15,17 @@ final class StringTransformingActor<T> extends StaticDispatchActor<String> {
     StringTransformingActor(final Blackboard<T> repository,
                             final Logger logFile,
                             final Function<String, T> transformer ) {
+        if (repository == null) {
+            throw new IllegalArgumentException("should not get null repository")
+        }
         this.repository = repository
+        if (logFile == null) {
+            throw new IllegalArgumentException("should not get null log")
+        }
         this.log = logFile
+        if (transformer == null) {
+            throw new IllegalArgumentException("should not get null transformer")
+        }
         this.transformer = transformer
     }
 
