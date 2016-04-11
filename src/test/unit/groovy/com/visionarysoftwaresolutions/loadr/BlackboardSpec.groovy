@@ -32,7 +32,7 @@ class BlackboardSpec extends spock.lang.Specification {
             1 * reactor.send(item)
     }
 
-    def "erase stops actors"() {
+    def "stops actors on close"() {
         given: "a Supplier"
             Supplier<StaticDispatchActor<String>> sup = Mock(Supplier)
         and: "an Actor to be supplied for notification"
@@ -44,7 +44,7 @@ class BlackboardSpec extends spock.lang.Specification {
         and: "I try to save an item"
             toTest.save(item)
         and: "I then erase the blackboard"
-            toTest.erase()
+            toTest.close()
         then: "the supplier supplies"
             1 * sup.get() >> reactor
         and: "the subscriber is notified"

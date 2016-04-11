@@ -1,12 +1,12 @@
 package com.visionarysoftwaresolutions.loadr
 
-import com.visionarysoftwaresolutions.loadr.api.Repository
+import com.visionarysoftwaresolutions.loadr.api.CloseableRepository
 import groovyx.gpars.actor.Actor
 import groovyx.gpars.actor.StaticDispatchActor
 
 import java.util.function.Supplier
 
-final class Blackboard<T> implements Repository<T> {
+final class Blackboard<T> implements CloseableRepository<T> {
     private final Set<T> stored
     private final Collection<StaticDispatchActor<T>> saverActors
     private final Supplier<StaticDispatchActor<T>> supplier
@@ -32,7 +32,8 @@ final class Blackboard<T> implements Repository<T> {
         saverActors << publisher
     }
 
-    void erase() {
+    @Override
+    void close() throws Exception {
         saverActors.each { it << Actor.STOP_MESSAGE }
         stored.clear()
     }
