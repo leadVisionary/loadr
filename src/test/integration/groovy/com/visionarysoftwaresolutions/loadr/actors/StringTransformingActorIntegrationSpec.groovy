@@ -1,5 +1,6 @@
-package com.visionarysoftwaresolutions.loadr
+package com.visionarysoftwaresolutions.loadr.actors
 
+import com.visionarysoftwaresolutions.loadr.StringTransformingActor
 import com.visionarysoftwaresolutions.loadr.api.CloseableRepository
 import org.slf4j.Logger
 
