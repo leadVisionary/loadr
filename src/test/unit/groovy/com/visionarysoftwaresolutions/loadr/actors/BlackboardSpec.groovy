@@ -1,4 +1,4 @@
-package com.visionarysoftwaresolutions.loadr
+package com.visionarysoftwaresolutions.loadr.actors
 
 import com.visionarysoftwaresolutions.loadr.actors.Blackboard
 import groovyx.gpars.actor.Actor
