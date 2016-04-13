@@ -65,10 +65,6 @@ class StringTransformingActorIntegrationSpec extends spock.lang.Specification {
             1 * log.error(_ as String)
     }
 
-    /**
-     * TODO: there is a Law of Demeter violation here I'm not happy about.
-     * I want to communicate
-     */
     def "communicates stop to Blackboard"() {
         given: "a transformation function"
             Function<String, Integer> transform = Mock(Function)
