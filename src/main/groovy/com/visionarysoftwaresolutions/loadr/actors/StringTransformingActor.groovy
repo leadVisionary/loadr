@@ -3,7 +3,7 @@ package com.visionarysoftwaresolutions.loadr.actors
 import com.visionarysoftwaresolutions.loadr.api.Command
 import groovyx.gpars.actor.StaticDispatchActor
 
-final class StringTransformingActor<T> extends StaticDispatchActor<String> {
+final class StringTransformingActor extends StaticDispatchActor<String> {
     private final Command<String> command
 
     StringTransformingActor(final Command<String> command) {

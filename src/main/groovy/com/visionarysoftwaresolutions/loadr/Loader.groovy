@@ -2,10 +2,7 @@ package com.visionarysoftwaresolutions.loadr
 
 
 import com.amazonaws.services.dynamodbv2.model.PutItemRequest
-import com.visionarysoftwaresolutions.loadr.actors.FileScanningActor
-import com.visionarysoftwaresolutions.loadr.actors.RandomlySelectingActorPool
-import com.visionarysoftwaresolutions.loadr.actors.StringTransformingActor
-import com.visionarysoftwaresolutions.loadr.dynamodb.DynamoDBPublisherSupplier
+import com.visionarysoftwaresolutions.loadr.actors.CommandBasedActorSupplier
 import groovyx.gpars.actor.StaticDispatchActor
 import org.slf4j.Logger
 
@@ -18,11 +15,9 @@ public final class Loader {
                                                                   final Logger log,
                                                                   final Function<T, PutItemRequest> mapper,
                                                                   final Function<String, T> stringTransform) {
-        final Supplier<StaticDispatchActor<T>> sup = new DynamoDBPublisherSupplier<T>(log, mapper)
-        final Supplier<StaticDispatchActor<T>> savers = new RandomlySelectingActorPool(publishers, sup)
-        final StaticDispatchActor<String> transformer = new StringTransformingActor(savers, log, stringTransform)
-        transformer.start()
-        new Loader(new FileScanningActor(transformer), source).load()
+        final Supplier<StaticDispatchActor<File>> c =
+                new CommandBasedActorSupplier(publishers, log, mapper, stringTransform)
+        new Loader(c.get(), source).load()
     }
 
     private final StaticDispatchActor<File> reader
