@@ -3,7 +3,7 @@ package com.visionarysoftwaresolutions.loadr.dynamodb
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBAsyncClient
 import com.amazonaws.services.dynamodbv2.model.PutItemRequest
-import com.visionarysoftwaresolutions.loadr.PublishingActor
+import com.visionarysoftwaresolutions.loadr.actors.PublishingActor
 import groovyx.gpars.actor.StaticDispatchActor
 import org.slf4j.Logger
 

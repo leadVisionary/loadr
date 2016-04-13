@@ -1,6 +1,5 @@
 package com.visionarysoftwaresolutions.loadr.actors
 
-import com.visionarysoftwaresolutions.loadr.FileScanningActor
 import groovyx.gpars.actor.StaticDispatchActor
 
 import java.nio.file.Files
