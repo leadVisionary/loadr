@@ -19,8 +19,13 @@ final class SendLinesOfFileToActorCommand implements Command<File> {
 
     @Override
     void execute(File parameter) {
+        if (!transformer.isActive()) {
+            transformer.start()
+        }
         final Stream<String> lines = lines(parameter.toPath())
         lines.forEach { String s -> transformer << s }
-        transformer.stop()
+        if (transformer.isActive()) {
+            transformer.stop()
+        }
     }
 }
