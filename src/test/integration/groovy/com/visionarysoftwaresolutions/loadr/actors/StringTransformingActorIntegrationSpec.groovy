@@ -31,7 +31,7 @@ class StringTransformingActorIntegrationSpec extends spock.lang.Specification {
         when: "I send the message"
             toTest << message
         and: "I send a stop"
-            toTest << "stop"
+            toTest.stop()
         and: "I wait for the actor to finish"
             [toTest]*.join()
         then: "the transformation is applied"
@@ -56,7 +56,7 @@ class StringTransformingActorIntegrationSpec extends spock.lang.Specification {
         when: "I send the message"
             toTest << message
         and: "I send a stop"
-            toTest << "stop"
+            toTest.stop()
         and: "I wait for the actor to finish"
             [toTest]*.join()
         then: "the transformation is applied"
@@ -81,7 +81,7 @@ class StringTransformingActorIntegrationSpec extends spock.lang.Specification {
         and: "the actor is started"
             toTest.start()
         when: "I tell the actor to stop"
-            toTest << "stop"
+            toTest.stop()
         and: "I wait for the actor to finish"
             [toTest]*.join()
         then: "the transformation is applied"

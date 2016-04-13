@@ -32,13 +32,7 @@ final class StringTransformingActor<T> extends StaticDispatchActor<String> {
 
     @Override
     void onMessage(final String message) {
-        if (message == "stop") {
-            repository.close()
-            stop()
-        }
-        else {
-            handleNextMessage(message)
-        }
+        handleNextMessage(message)
     }
 
     private void handleNextMessage(final String message) {
@@ -47,5 +41,11 @@ final class StringTransformingActor<T> extends StaticDispatchActor<String> {
         } catch (final Exception ex) {
             log.error(String.format("%s: Failed to write %s because %s %n%n", Instant.now(), message, ex))
         }
+    }
+
+    @Override
+    protected void handleTermination() {
+        super.handleTermination()
+        repository.close()
     }
 }

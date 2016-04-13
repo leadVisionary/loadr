@@ -24,7 +24,7 @@ final class FileScanningActor extends StaticDispatchActor<File> {
     void onMessage(final File message) {
         final Stream<String> lines = lines(message.toPath())
         lines.forEach { String s -> transformer << s }
-        transformer << "stop"
+        transformer.stop()
         stop()
     }
 }
