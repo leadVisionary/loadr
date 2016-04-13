@@ -1,6 +1,5 @@
 package com.visionarysoftwaresolutions.loadr.actors
 
-import com.amazonaws.services.dynamodbv2.model.PutItemRequest
 import com.visionarysoftwaresolutions.loadr.api.CloseableRepository
 import com.visionarysoftwaresolutions.loadr.dynamodb.DynamoDBPublisherSupplier
 import groovy.transform.Immutable
@@ -19,12 +18,16 @@ public final class CommandBasedActorSupplier<T, U> implements Supplier<StaticDis
 
     @Override
     FileScanningActor get() {
-        final Supplier<StaticDispatchActor<T>> sup = new DynamoDBPublisherSupplier<T>(log, mapper)
-        final Supplier<StaticDispatchActor<T>> savers = new RandomlySelectingActorPool(publishers, sup)
-        final CloseableRepository<T> repo = new Blackboard<>(savers)
+        CloseableRepository<T> repo = getSync()
         final TransformStringAndSaveToRepositoryCommand com = new TransformStringAndSaveToRepositoryCommand(repo, log, stringTransform)
         final StaticDispatchActor<String> transformer = new StringTransformingActor(com)
         transformer.start()
-        return new FileScanningActor(transformer)
+        return new FileScanningActor(new SendLinesOfFileToActorCommand(transformer))
+    }
+
+    private CloseableRepository<T> getSync() {
+        final Supplier<StaticDispatchActor<T>> sup = new DynamoDBPublisherSupplier<T>(log, mapper)
+        final Supplier<StaticDispatchActor<T>> savers = new RandomlySelectingActorPool(publishers, sup)
+        new Blackboard<>(savers)
     }
 }
