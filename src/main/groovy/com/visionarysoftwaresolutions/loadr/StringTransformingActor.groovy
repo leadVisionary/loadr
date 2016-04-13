@@ -1,6 +1,6 @@
 package com.visionarysoftwaresolutions.loadr
 
-import com.visionarysoftwaresolutions.loadr.api.Repository
+import com.visionarysoftwaresolutions.loadr.api.CloseableRepository
 import groovyx.gpars.actor.StaticDispatchActor
 import org.slf4j.Logger
 
@@ -9,11 +9,11 @@ import java.util.function.Function
 
 
 final class StringTransformingActor<T> extends StaticDispatchActor<String> {
-    private final Repository<T> repository
+    private final CloseableRepository<T> repository
     private final Logger log
     private final Function<String, T> transformer
 
-    StringTransformingActor(final Repository<T> repository,
+    StringTransformingActor(final CloseableRepository<T> repository,
                             final Logger logFile,
                             final Function<String, T> transformer ) {
         if (repository == null) {
@@ -33,9 +33,7 @@ final class StringTransformingActor<T> extends StaticDispatchActor<String> {
     @Override
     void onMessage(final String message) {
         if (message == "stop") {
-            if (repository instanceof Blackboard) {
-                ((Blackboard) repository).close()
-            }
+            repository.close()
             stop()
         }
         else {
