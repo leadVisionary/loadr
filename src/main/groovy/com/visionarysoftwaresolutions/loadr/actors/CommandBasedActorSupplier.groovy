@@ -11,10 +11,10 @@ import java.util.function.Function
 import java.util.function.Supplier
 
 @Immutable
-public final class CommandBasedActorSupplier<T> implements Supplier<StaticDispatchActor<File>> {
+public final class CommandBasedActorSupplier<T, U> implements Supplier<StaticDispatchActor<File>> {
     private final int publishers
     private final Logger log
-    private final Function<T, PutItemRequest> mapper
+    private final Function<T, U> mapper
     private final Function<String, T> stringTransform
 
     @Override

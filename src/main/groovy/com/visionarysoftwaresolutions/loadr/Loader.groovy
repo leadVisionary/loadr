@@ -1,7 +1,5 @@
 package com.visionarysoftwaresolutions.loadr
 
-
-import com.amazonaws.services.dynamodbv2.model.PutItemRequest
 import com.visionarysoftwaresolutions.loadr.actors.CommandBasedActorSupplier
 import groovyx.gpars.actor.StaticDispatchActor
 import org.slf4j.Logger
@@ -10,10 +8,10 @@ import java.util.function.Function
 import java.util.function.Supplier
 
 public final class Loader {
-    public static <T> void loadFromFileWithDelimiterAndPublishers(final File source,
+    public static <T, U> void loadFromFileWithDelimiterAndPublishers(final File source,
                                                                   final int publishers,
                                                                   final Logger log,
-                                                                  final Function<T, PutItemRequest> mapper,
+                                                                  final Function<T, U> mapper,
                                                                   final Function<String, T> stringTransform) {
         final Supplier<StaticDispatchActor<File>> c =
                 new CommandBasedActorSupplier(publishers, log, mapper, stringTransform)
