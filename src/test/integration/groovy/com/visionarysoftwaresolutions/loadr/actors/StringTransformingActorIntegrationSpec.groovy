@@ -1,88 +1,35 @@
 package com.visionarysoftwaresolutions.loadr.actors
 
-import com.visionarysoftwaresolutions.loadr.api.CloseableRepository
-import org.slf4j.Logger
-
-import java.util.function.Function
+import com.visionarysoftwaresolutions.loadr.api.Command
 
 class StringTransformingActorIntegrationSpec extends spock.lang.Specification {
-    def "rejects null inputs"() {
-        when: "I try to construct with a null"
-            new StringTransformingActor(r, l, t)
+    Command<?> command
+
+    def setup() {
+        command = Mock()
+    }
+
+    def "rejects null command"() {
+        when: "a null command is given on construction"
+            new StringTransformingActor(null)
         then: "an IllegalArgumentException is thrown"
             IllegalArgumentException e = thrown()
-        where: r                              | l            | t
-               null                           | Mock(Logger) | Mock(Function)
-               Mock(CloseableRepository)      | null         | Mock(Function)
-               Mock(CloseableRepository)      | Mock(Logger) | null
     }
 
-    def "transforms message and saves to Blackboard"() {
-        given: "a transformation function"
-            Function<String, Integer> transform = Mock(Function)
-        and: "A CloseableRepository to save to"
-            CloseableRepository<Integer> repo = Mock(CloseableRepository)
-        and: "a StringTransformingActor"
-            StringTransformingActor<Integer> toTest = new StringTransformingActor<>(repo, Mock(Logger), transform)
+    def "uses the command when a message is sent"() {
+        given: "A StringTransformingActor configured with a command"
+            StringTransformingActor<?> toTest = new StringTransformingActor<>(command)
         and: "the actor is started"
             toTest.start()
-        and: "A message to be sent"
-            String message = "foo"
-        when: "I send the message"
+        and: "a message to be sent"
+            def message = "foo"
+        when: "I send the actor a message"
             toTest << message
-        and: "I send a stop"
+        and: "I tell the actor to stop"
             toTest.stop()
-        and: "I wait for the actor to finish"
-            [toTest]*.join()
-        then: "the transformation is applied"
-            1 * transform.apply(message) >> message.length()
-        and: "the repository is saved to"
-            1 * repo.save(message.length())
-    }
-
-    def "writes to log on error"() {
-        given: "a transformation function"
-            Function<String, Integer> transform = Mock(Function)
-        and: "A CloseableRepository to save to"
-            CloseableRepository<Integer> repo = Mock(CloseableRepository)
-        and: "A log to write to"
-            Logger log =  Mock(Logger)
-        and: "a StringTransformingActor"
-            StringTransformingActor<Integer> toTest = new StringTransformingActor<>(repo, log, transform)
-        and: "the actor is started"
-            toTest.start()
-        and: "A message to be sent"
-            String message = "foo"
-        when: "I send the message"
-            toTest << message
-        and: "I send a stop"
-            toTest.stop()
-        and: "I wait for the actor to finish"
-            [toTest]*.join()
-        then: "the transformation is applied"
-            1 * transform.apply(message) >> { String s -> throw new IllegalArgumentException() }
-        and: "the log is written"
-            1 * log.error(_ as String)
-    }
-
-    def "communicates stop to Blackboard"() {
-        given: "a transformation function"
-            Function<String, Integer> transform = Mock(Function)
-        and: "A Blackboard to save to"
-            CloseableRepository<Integer> repo = Mock(CloseableRepository)
-        and: "A log to write to"
-            Logger log =  Mock(Logger)
-        and: "a StringTransformingActor"
-            StringTransformingActor<Integer> toTest = new StringTransformingActor<>(repo, log, transform)
-        and: "the actor is started"
-            toTest.start()
-        when: "I tell the actor to stop"
-            toTest.stop()
-        and: "I wait for the actor to finish"
-            [toTest]*.join()
-        then: "the transformation is applied"
-            0 * transform.apply("stop")
-        and: "the log is written"
-            1 * repo.close()
+        and: "I wait for the actor to complete"
+            toTest.join()
+        then: "the command is invoked"
+            1 * command.execute(message)
     }
 }
