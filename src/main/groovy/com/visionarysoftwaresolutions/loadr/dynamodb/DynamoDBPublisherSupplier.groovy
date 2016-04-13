@@ -28,6 +28,6 @@ final class DynamoDBPublisherSupplier<T> implements Supplier<StaticDispatchActor
     @Override
     StaticDispatchActor<T> get() {
         final AmazonDynamoDB db = new AmazonDynamoDBAsyncClient();
-        new PublishingActor(new DynamoDBPublishCommand(db, log, transformer))
+        new PublishingActor(new DynamoDBCommand(db, log, transformer))
     }
 }

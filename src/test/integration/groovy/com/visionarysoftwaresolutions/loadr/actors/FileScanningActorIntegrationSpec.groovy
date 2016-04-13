@@ -1,5 +1,6 @@
 package com.visionarysoftwaresolutions.loadr.actors
 
+import com.visionarysoftwaresolutions.loadr.api.Command
 import groovyx.gpars.actor.StaticDispatchActor
 
 import java.nio.file.Files
@@ -34,8 +35,10 @@ class FileScanningActorIntegrationSpec extends spock.lang.Specification {
             temp.append(content)
         and: "An Actor to process the messages"
             StaticDispatchActor<String> processor = new DummyActor()
+        and: "A command to publish to that Actor"
+            Command<File> command = new SendLinesOfFileToActorCommand(processor)
         and: "A FileScanningActor to process the file"
-            FileScanningActor toTest = new FileScanningActor(processor)
+            FileScanningActor toTest = new FileScanningActor(command)
         and: "the processor are started"
             processor.start()
         and: "file scanner is started"

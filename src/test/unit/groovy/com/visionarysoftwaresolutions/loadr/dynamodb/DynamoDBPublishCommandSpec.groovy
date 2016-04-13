@@ -11,7 +11,7 @@ class DynamoDBPublishCommandSpec extends spock.lang.Specification {
 
     def "rejects null constructor arguments"() {
         when: "I try to construct with null client"
-            new DynamoDBPublishCommand<String>(c, log, function)
+            new DynamoDBCommand<String>(c, log, function)
         then: "I get an IllegalArgumentException"
             Exception e = thrown()
             e instanceof IllegalArgumentException
@@ -30,7 +30,7 @@ class DynamoDBPublishCommandSpec extends spock.lang.Specification {
         and: "a transform function"
             Function<String, PutItemRequest> transformer = Mock(Function)
         and: "I have a publisher"
-            DynamoDBPublishCommand<String> command = new DynamoDBPublishCommand<>(client, logFile, transformer)
+            DynamoDBCommand<String> command = new DynamoDBCommand<>(client, logFile, transformer)
         and: "a message to be sent"
             String message ="foo"
         when: "I try tp publish"
@@ -51,7 +51,7 @@ class DynamoDBPublishCommandSpec extends spock.lang.Specification {
         and: "a transform function"
             Function<String, PutItemRequest> transformer = Mock(Function)
         and: "I have a publisher"
-            DynamoDBPublishCommand<String> command = new DynamoDBPublishCommand<>(client, logFile, transformer)
+            DynamoDBCommand<String> command = new DynamoDBCommand<>(client, logFile, transformer)
         and: "a message to be sent"
             String message ="foo"
         when: "I try tp publish"

@@ -1,9 +1,9 @@
 package com.visionarysoftwaresolutions.loadr.actors
 
-import com.visionarysoftwaresolutions.loadr.api.PublishCommand
+import com.visionarysoftwaresolutions.loadr.api.Command
 
 class PublishingActorIntegrationSpec extends spock.lang.Specification {
-    PublishCommand<?> command
+    Command<?> command
 
     def setup() {
         command = Mock()
