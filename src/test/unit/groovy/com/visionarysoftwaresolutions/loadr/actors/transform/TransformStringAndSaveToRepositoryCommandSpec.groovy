@@ -1,6 +1,5 @@
 package com.visionarysoftwaresolutions.loadr.actors.transform
 
-import com.visionarysoftwaresolutions.loadr.actors.transform.TransformStringAndSaveToRepositoryCommand
 import com.visionarysoftwaresolutions.loadr.api.CloseableRepository
 import org.slf4j.Logger
 

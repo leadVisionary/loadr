@@ -1,6 +1,5 @@
 package com.visionarysoftwaresolutions.loadr.actors.extract
 
-import com.visionarysoftwaresolutions.loadr.actors.extract.SendLinesOfFileToActorCommand
 import groovyx.gpars.actor.StaticDispatchActor
 
 import java.nio.file.Files
