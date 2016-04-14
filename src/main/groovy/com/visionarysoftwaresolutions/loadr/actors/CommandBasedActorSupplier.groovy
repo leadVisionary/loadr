@@ -6,7 +6,7 @@ import groovyx.gpars.actor.StaticDispatchActor
 import java.util.function.Supplier
 
 @Immutable
-public final class CommandBasedActorSupplier<T, U> implements Supplier<StaticDispatchActor<File>> {
+public final class CommandBasedActorSupplier implements Supplier<StaticDispatchActor<File>> {
     private final Supplier<StaticDispatchActor<String>> supplier
 
     @Override
