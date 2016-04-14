@@ -11,14 +11,14 @@ class StringTransformingActorIntegrationSpec extends spock.lang.Specification {
 
     def "rejects null command"() {
         when: "a null command is given on construction"
-            new StringTransformingActor(null)
+            new PublishingActor(null)
         then: "an IllegalArgumentException is thrown"
             IllegalArgumentException e = thrown()
     }
 
     def "uses the command when a message is sent"() {
-        given: "A StringTransformingActor configured with a command"
-            StringTransformingActor<?> toTest = new StringTransformingActor<>(command)
+        given: "A PublishingActor configured with a command"
+            PublishingActor<String> toTest = new PublishingActor<String>(command)
         and: "the actor is started"
             toTest.start()
         and: "a message to be sent"
