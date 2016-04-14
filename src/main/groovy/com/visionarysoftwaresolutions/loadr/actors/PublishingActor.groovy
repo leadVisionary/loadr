@@ -2,15 +2,27 @@ package com.visionarysoftwaresolutions.loadr.actors
 
 import com.visionarysoftwaresolutions.loadr.api.Command
 import groovyx.gpars.actor.StaticDispatchActor
+import groovyx.gpars.group.DefaultPGroup
+import groovyx.gpars.group.PGroup
+import groovyx.gpars.scheduler.DefaultPool
 
 final class PublishingActor<T> extends StaticDispatchActor<T> {
     private final Command<T> command
 
     PublishingActor(final Command<T> command) {
+        this(command,new DefaultPGroup(new DefaultPool(true, 1)))
+    }
+
+    protected PublishingActor(final Command<T> command,
+                              final PGroup group) {
         if (command == null) {
-            throw new IllegalArgumentException("Should not get null command")
+            throw new IllegalArgumentException("should not get null command")
         }
         this.command = command
+        if (group == null) {
+            throw new IllegalArgumentException("should not get null group")
+        }
+        this.parallelGroup = group
     }
 
     @Override
