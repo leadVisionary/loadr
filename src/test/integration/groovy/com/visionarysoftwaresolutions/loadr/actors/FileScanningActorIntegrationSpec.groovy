@@ -21,7 +21,7 @@ class FileScanningActorIntegrationSpec extends spock.lang.Specification {
 
     def "rejects null dispatcher"() {
         when: "I try to conastruct with null"
-            new FileScanningActor(null)
+            new PublishingActor<File>(null)
         then: "An IllegalArgumentException is thrown"
             IllegalArgumentException e = thrown()
     }
@@ -37,15 +37,15 @@ class FileScanningActorIntegrationSpec extends spock.lang.Specification {
             StaticDispatchActor<String> processor = new DummyActor()
         and: "A command to publish to that Actor"
             Command<File> command = new SendLinesOfFileToActorCommand(processor)
-        and: "A FileScanningActor to process the file"
-            FileScanningActor toTest = new FileScanningActor(command)
+        and: "A PublishingActor to process the file"
+            PublishingActor<File> toTest = new PublishingActor<File>(command)
         and: "the processor are started"
             processor.start()
         and: "file scanner is started"
             toTest.start()
-        when: "I send the file to the FileScanningActor"
+        when: "I send the file to the PublishingActor"
             toTest << temp
-        and: "I tell the FileScanningActor to stop"
+        and: "I tell the PublishingActor to stop"
             toTest.stop()
         and: "I wait for the actors to finish"
             [processor, toTest]*.join()
