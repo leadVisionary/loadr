@@ -1,7 +1,7 @@
 package com.visionarysoftwaresolutions.loadr.dynamodb
 
-import com.visionarysoftwaresolutions.loadr.actors.CommandBasedActorSupplier
-import com.visionarysoftwaresolutions.loadr.actors.CommandSupplier
+import com.visionarysoftwaresolutions.loadr.api.CommandBasedActorSupplier
+import com.visionarysoftwaresolutions.loadr.api.CommandSupplier
 import com.visionarysoftwaresolutions.loadr.actors.CommandingActor
 import com.visionarysoftwaresolutions.loadr.api.Command
 import groovyx.gpars.actor.StaticDispatchActor

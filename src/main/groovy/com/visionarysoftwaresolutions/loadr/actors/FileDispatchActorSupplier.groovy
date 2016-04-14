@@ -1,6 +1,8 @@
 package com.visionarysoftwaresolutions.loadr.actors
 
 import com.visionarysoftwaresolutions.loadr.api.Command
+import com.visionarysoftwaresolutions.loadr.api.CommandBasedActorSupplier
+import com.visionarysoftwaresolutions.loadr.api.CommandSupplier
 import groovyx.gpars.actor.StaticDispatchActor
 
 final class FileDispatchActorSupplier extends CommandBasedActorSupplier<File> {
