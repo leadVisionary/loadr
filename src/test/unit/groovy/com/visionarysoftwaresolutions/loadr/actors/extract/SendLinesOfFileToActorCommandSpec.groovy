@@ -1,4 +1,4 @@
-package com.visionarysoftwaresolutions.loadr.actors
+package com.visionarysoftwaresolutions.loadr.actors.extract
 
 import com.visionarysoftwaresolutions.loadr.actors.extract.SendLinesOfFileToActorCommand
 import groovyx.gpars.actor.StaticDispatchActor

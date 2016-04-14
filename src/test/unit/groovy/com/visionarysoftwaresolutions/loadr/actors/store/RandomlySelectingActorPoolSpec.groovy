@@ -1,4 +1,4 @@
-package com.visionarysoftwaresolutions.loadr.actors
+package com.visionarysoftwaresolutions.loadr.actors.store
 
 import com.visionarysoftwaresolutions.loadr.actors.store.RandomlySelectingActorPool
 import groovyx.gpars.actor.StaticDispatchActor
