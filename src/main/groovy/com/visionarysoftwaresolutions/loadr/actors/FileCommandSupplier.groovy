@@ -7,7 +7,7 @@ import groovyx.gpars.actor.StaticDispatchActor
 import java.util.function.Supplier
 
 @Immutable
-class FileCommandSupplier extends CommandSupplier<File>{
+class FileCommandSupplier extends CommandSupplier<File> {
     private final Supplier<StaticDispatchActor<String>> supplier
 
     @Override
