@@ -6,9 +6,9 @@ import org.slf4j.Logger;
 
 import java.io.File;
 import java.nio.file.Files;
-import java.util.concurrent.ForkJoinPool;
-import java.util.concurrent.ForkJoinWorkerThread;
+import java.util.concurrent.*;
 import java.util.function.Function;
+import java.util.stream.Stream;
 
 public final class StreamBasedLoadFromFileCommand<T,U> implements Command<File> {
     private final Logger log;
@@ -49,12 +49,22 @@ public final class StreamBasedLoadFromFileCommand<T,U> implements Command<File> 
     @Override
     public void execute(final File parameter) {
         final ForkJoinPool loadPool = new ForkJoinPool(publishers, loadThreadFactory(), loadExceptionHandler(log), true);
-        loadPool.submit(() -> Files.lines(parameter.toPath())
+        try {
+            final Stream<String> lines = Files.lines(parameter.toPath());
+            final long written = loadPool.submit(applyETL(lines)).get();
+            log.info(String.format("%nWrote out %d records for %s%n", written, parameter.getAbsolutePath()));
+        } catch (Exception e) {
+            log.error("died while waiting", e);
+        }
+    }
+
+    private Callable<Long> applyETL(final Stream<String> lines) {
+        return () -> lines
                 .parallel()
-                .map (extract)
+                .map(extract)
                 .map(transform)
                 .map(load)
-                .count());
+                .count();
     }
 
     private Thread.UncaughtExceptionHandler loadExceptionHandler(final Logger log) {
