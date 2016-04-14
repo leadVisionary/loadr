@@ -16,7 +16,7 @@ public abstract class CommandBasedActorSupplier<T> implements Supplier<StaticDis
     }
 
     @Override
-    StaticDispatchActor<T> get() {
+    final StaticDispatchActor<T> get() {
         final Command<T> transformer = supplier.get()
         if (transformer == null) {
             throw new IllegalStateException("should not get null Command")

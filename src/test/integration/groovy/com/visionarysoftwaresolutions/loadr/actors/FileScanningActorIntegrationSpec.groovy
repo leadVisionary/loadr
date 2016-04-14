@@ -45,6 +45,8 @@ class FileScanningActorIntegrationSpec extends spock.lang.Specification {
             toTest.start()
         when: "I send the file to the FileScanningActor"
             toTest << temp
+        and: "I tell the FileScanningActor to stop"
+            toTest.stop()
         and: "I wait for the actors to finish"
             [processor, toTest]*.join()
         then: "the processor receives the file contents and stop"

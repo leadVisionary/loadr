@@ -8,9 +8,8 @@ import com.visionarysoftwaresolutions.loadr.dynamodb.DynamoDBCommand
 import org.slf4j.Logger
 
 import java.util.function.Function
-import java.util.function.Supplier
 
-final class DynamoCommandSupplier<T> implements Supplier<Command<T>> {
+final class DynamoCommandSupplier<T> extends CommandSupplier<T> {
     private final Logger log
     private final Function<T, PutItemRequest> transformer
 
@@ -24,10 +23,10 @@ final class DynamoCommandSupplier<T> implements Supplier<Command<T>> {
         }
         this.transformer = transformer
     }
+
     @Override
-    Command<T> get() {
+    Command<T> getCommand() {
         final AmazonDynamoDB db = new AmazonDynamoDBAsyncClient();
-        def command = new DynamoDBCommand(db, log, transformer)
-        command
+        new DynamoDBCommand(db, log, transformer)
     }
 }

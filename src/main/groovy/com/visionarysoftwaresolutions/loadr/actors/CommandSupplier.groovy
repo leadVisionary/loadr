@@ -6,7 +6,7 @@ import java.util.function.Supplier
 
 abstract class CommandSupplier<T> implements Supplier<Command<T>> {
     @Override
-    Command<T> get() {
+    public final Command<T> get() {
         getCommand()
     }
 
