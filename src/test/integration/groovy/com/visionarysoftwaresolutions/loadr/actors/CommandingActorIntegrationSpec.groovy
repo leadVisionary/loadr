@@ -2,7 +2,7 @@ package com.visionarysoftwaresolutions.loadr.actors
 
 import com.visionarysoftwaresolutions.loadr.api.Command
 
-class PublishingActorIntegrationSpec extends spock.lang.Specification {
+class CommandingActorIntegrationSpec extends spock.lang.Specification {
     Command<?> command
 
     def setup() {
@@ -11,14 +11,14 @@ class PublishingActorIntegrationSpec extends spock.lang.Specification {
 
     def "rejects null command"() {
         when: "a null command is given on construction"
-            new PublishingActor(null)
+            new CommandingActor(null)
         then: "an IllegalArgumentException is thrown"
             IllegalArgumentException e = thrown()
     }
 
     def "uses the command when a message is sent"() {
-        given: "A PublishingActor configured with a command"
-            PublishingActor<?> toTest = new PublishingActor<>(command)
+        given: "A CommandingActor configured with a command"
+            CommandingActor<?> toTest = new CommandingActor<>(command)
         and: "the actor is started"
             toTest.start()
         and: "a message to be sent"

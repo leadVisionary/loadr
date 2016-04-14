@@ -1,6 +1,6 @@
 package com.visionarysoftwaresolutions.loadr.dynamodb
 
-import com.visionarysoftwaresolutions.loadr.actors.PublishingActor
+import com.visionarysoftwaresolutions.loadr.actors.CommandingActor
 import com.visionarysoftwaresolutions.loadr.api.Command
 import groovyx.gpars.actor.StaticDispatchActor
 import java.util.function.Supplier
@@ -21,6 +21,6 @@ final class DynamoDBPublisherSupplier<T> implements Supplier<StaticDispatchActor
         if (command == null) {
             throw new IllegalStateException("Should not get null Command")
         }
-        new PublishingActor(command)
+        new CommandingActor(command)
     }
 }

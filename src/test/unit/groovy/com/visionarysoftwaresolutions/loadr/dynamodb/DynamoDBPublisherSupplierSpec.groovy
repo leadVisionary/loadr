@@ -1,6 +1,6 @@
 package com.visionarysoftwaresolutions.loadr.dynamodb
 
-import com.visionarysoftwaresolutions.loadr.actors.PublishingActor
+import com.visionarysoftwaresolutions.loadr.actors.CommandingActor
 import com.visionarysoftwaresolutions.loadr.api.Command
 import groovyx.gpars.actor.StaticDispatchActor
 import java.util.function.Supplier
@@ -22,7 +22,7 @@ class DynamoDBPublisherSupplierSpec extends spock.lang.Specification {
             final StaticDispatchActor<?> actor = sup.get()
         then: "the supplier vends a Command"
             1 * comSup.get() >> Mock(Command)
-        and: "the Actor is a PublishingActor"
-            actor instanceof PublishingActor
+        and: "the Actor is a CommandingActor"
+            actor instanceof CommandingActor
     }
 }

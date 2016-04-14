@@ -16,7 +16,7 @@ final class TransformingActorSupplier implements Supplier<StaticDispatchActor<St
         if (com == null) {
             throw new IllegalStateException("should not get null command")
         }
-        final StaticDispatchActor<String> transformer = new PublishingActor(com)
+        final StaticDispatchActor<String> transformer = new CommandingActor(com)
         transformer.start()
         transformer
     }

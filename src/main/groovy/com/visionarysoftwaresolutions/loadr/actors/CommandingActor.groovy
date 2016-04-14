@@ -6,14 +6,14 @@ import groovyx.gpars.group.DefaultPGroup
 import groovyx.gpars.group.PGroup
 import groovyx.gpars.scheduler.DefaultPool
 
-final class PublishingActor<T> extends StaticDispatchActor<T> {
+final class CommandingActor<T> extends StaticDispatchActor<T> {
     private final Command<T> command
 
-    PublishingActor(final Command<T> command) {
+    CommandingActor(final Command<T> command) {
         this(command,new DefaultPGroup(new DefaultPool(true, 1)))
     }
 
-    protected PublishingActor(final Command<T> command,
+    protected CommandingActor(final Command<T> command,
                               final PGroup group) {
         if (command == null) {
             throw new IllegalArgumentException("should not get null command")
