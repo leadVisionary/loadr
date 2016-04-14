@@ -50,10 +50,7 @@ public final class ActorBasedFileProcessingCommandSupplier<T,U> implements Suppl
         final Supplier<CloseableRepository<T>> repo = new BlackboardSupplier<T>(savers)
         final Supplier<Command<String>> transform = new StringTransformCommandSupplier<>(repo, log, stringTransform)
         final Supplier<Command<File>> file = new FileCommandSupplier(new CommandBasedActorSupplier(transform))
-
         def supplier = new CommandBasedActorSupplier(file)
-
-        def command = new LoadFromFileViaActorsCommand(supplier)
-        command
+        new LoadFromFileViaActorsCommand(supplier)
     }
 }
