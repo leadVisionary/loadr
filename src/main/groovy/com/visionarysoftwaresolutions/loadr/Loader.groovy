@@ -3,6 +3,7 @@ package com.visionarysoftwaresolutions.loadr
 import com.visionarysoftwaresolutions.loadr.actors.BlackboardSupplier
 import com.visionarysoftwaresolutions.loadr.actors.CommandBasedActorSupplier
 import com.visionarysoftwaresolutions.loadr.actors.StringTransformCommandSupplier
+import com.visionarysoftwaresolutions.loadr.actors.SubscriberSupplier
 import com.visionarysoftwaresolutions.loadr.actors.TransformingActorSupplier
 import com.visionarysoftwaresolutions.loadr.api.CloseableRepository
 import com.visionarysoftwaresolutions.loadr.api.Command
@@ -17,7 +18,7 @@ public final class Loader {
                                                                   final Logger log,
                                                                   final Function<T, U> mapper,
                                                                   final Function<String, T> stringTransform) {
-        final Supplier<CloseableRepository<T>> blah = new BlackboardSupplier<T, U>(publishers, log, mapper)
+        final Supplier<CloseableRepository<T>> blah = new BlackboardSupplier<T, U>(new SubscriberSupplier(publishers, log, mapper))
         final Supplier<Command<String>> sup = new StringTransformCommandSupplier<>(blah, log, stringTransform)
         new LoadFromFileViaActorsCommand(new CommandBasedActorSupplier(new TransformingActorSupplier(sup))).execute(source)
     }
