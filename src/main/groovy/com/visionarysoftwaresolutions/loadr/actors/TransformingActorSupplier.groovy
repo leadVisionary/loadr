@@ -1,21 +1,19 @@
 package com.visionarysoftwaresolutions.loadr.actors
 
 import com.visionarysoftwaresolutions.loadr.api.Command
-import groovy.transform.Immutable
 import groovyx.gpars.actor.StaticDispatchActor
 
 import java.util.function.Supplier
 
-@Immutable
-final class TransformingActorSupplier implements Supplier<StaticDispatchActor<String>> {
-    private final Supplier<Command<String>> supplier
+final class TransformingActorSupplier extends CommandBasedActorSupplier<String> {
+
+    protected TransformingActorSupplier(
+            CommandSupplier<String> supplier) {
+        super(supplier)
+    }
 
     @Override
-    StaticDispatchActor<String> get() {
-        Command<String> com = supplier.get()
-        if (com == null) {
-            throw new IllegalStateException("should not get null command")
-        }
+    StaticDispatchActor<String> getActor(Command<String> command) {
         final StaticDispatchActor<String> transformer = new CommandingActor(com)
         transformer.start()
         transformer
