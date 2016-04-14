@@ -10,7 +10,7 @@ import java.util.function.Function
 import java.util.function.Supplier
 
 @Immutable
-public final class StringTransformCommandSupplier<T, U> implements Supplier<Command<String>> {
+public final class StringTransformCommandSupplier<T> implements Supplier<Command<String>> {
     private final Supplier<CloseableRepository<T>> supplier
     private final Logger log
     private final Function<String, T> stringTransform

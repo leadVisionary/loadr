@@ -1,18 +1,17 @@
 package com.visionarysoftwaresolutions.loadr.actors
 
 import com.visionarysoftwaresolutions.loadr.api.Command
-import com.visionarysoftwaresolutions.loadr.api.CommandSupplier
 import groovy.transform.Immutable
 import groovyx.gpars.actor.StaticDispatchActor
 
 import java.util.function.Supplier
 
 @Immutable
-class FileCommandSupplier extends CommandSupplier<File> {
+class FileCommandSupplier implements Supplier<Command<File>> {
     private final Supplier<StaticDispatchActor<String>> supplier
 
     @Override
-    Command<File> getCommand() {
+    Command<File> get() {
         final StaticDispatchActor<String> transformer = supplier.get()
         if (transformer == null) {
             throw new IllegalStateException("should not get null actor")

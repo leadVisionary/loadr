@@ -1,16 +1,15 @@
 package com.visionarysoftwaresolutions.loadr.actors;
 
 import com.visionarysoftwaresolutions.loadr.api.Command;
-import com.visionarysoftwaresolutions.loadr.api.CommandSupplier;
 import groovyx.gpars.actor.StaticDispatchActor;
 
 import java.util.function.Supplier;
 
 final class CommandBasedActorSupplier<T> implements Supplier<StaticDispatchActor<T>> {
 
-    private final CommandSupplier<T> supplier;
+    private final Supplier<Command<T>> supplier;
 
-    protected CommandBasedActorSupplier(final CommandSupplier<T> supplier) {
+    protected CommandBasedActorSupplier(final Supplier<Command<T>> supplier) {
         if (supplier == null) {
             throw new IllegalArgumentException("Should not get null supplier");
         }
