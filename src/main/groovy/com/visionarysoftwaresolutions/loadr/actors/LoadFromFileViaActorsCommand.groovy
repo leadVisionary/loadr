@@ -1,4 +1,4 @@
-package com.visionarysoftwaresolutions.loadr
+package com.visionarysoftwaresolutions.loadr.actors
 
 import com.visionarysoftwaresolutions.loadr.api.Command
 import groovyx.gpars.actor.StaticDispatchActor
