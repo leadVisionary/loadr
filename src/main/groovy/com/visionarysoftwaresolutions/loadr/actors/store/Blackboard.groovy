@@ -1,4 +1,4 @@
-package com.visionarysoftwaresolutions.loadr.actors
+package com.visionarysoftwaresolutions.loadr.actors.store
 
 import com.visionarysoftwaresolutions.loadr.api.CloseableRepository
 import groovyx.gpars.actor.Actor

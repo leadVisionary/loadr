@@ -1,5 +1,6 @@
-package com.visionarysoftwaresolutions.loadr.actors
+package com.visionarysoftwaresolutions.loadr.actors.store
 
+import com.visionarysoftwaresolutions.loadr.actors.CommandBasedActorSupplier
 import com.visionarysoftwaresolutions.loadr.api.Command
 import groovy.transform.Immutable
 import groovyx.gpars.actor.StaticDispatchActor

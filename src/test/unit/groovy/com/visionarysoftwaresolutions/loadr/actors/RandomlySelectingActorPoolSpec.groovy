@@ -1,5 +1,6 @@
 package com.visionarysoftwaresolutions.loadr.actors
 
+import com.visionarysoftwaresolutions.loadr.actors.store.RandomlySelectingActorPool
 import groovyx.gpars.actor.StaticDispatchActor
 
 import java.util.function.Supplier

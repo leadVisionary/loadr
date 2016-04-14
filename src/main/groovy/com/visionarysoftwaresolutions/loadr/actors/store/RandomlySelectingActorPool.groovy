@@ -1,4 +1,4 @@
-package com.visionarysoftwaresolutions.loadr.actors
+package com.visionarysoftwaresolutions.loadr.actors.store
 
 import groovyx.gpars.actor.StaticDispatchActor
 import groovyx.gpars.group.DefaultPGroup

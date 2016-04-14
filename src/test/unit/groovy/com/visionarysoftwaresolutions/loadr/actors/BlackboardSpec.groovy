@@ -1,5 +1,6 @@
 package com.visionarysoftwaresolutions.loadr.actors
 
+import com.visionarysoftwaresolutions.loadr.actors.store.Blackboard
 import groovyx.gpars.actor.Actor
 import groovyx.gpars.actor.StaticDispatchActor
 

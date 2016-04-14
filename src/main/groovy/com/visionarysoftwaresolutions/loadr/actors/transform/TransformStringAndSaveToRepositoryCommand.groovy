@@ -1,4 +1,4 @@
-package com.visionarysoftwaresolutions.loadr.actors
+package com.visionarysoftwaresolutions.loadr.actors.transform
 
 import com.visionarysoftwaresolutions.loadr.api.CloseableRepository
 import com.visionarysoftwaresolutions.loadr.api.Command
