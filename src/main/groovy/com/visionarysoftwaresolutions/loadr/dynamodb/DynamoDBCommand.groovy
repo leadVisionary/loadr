@@ -28,7 +28,7 @@ final class DynamoDBCommand<T> implements Command<T> {
         this.logFile = logFile
 
         if(transformer == null) {
-            throw new IllegalArgumentException("should not get null transformer")
+            throw new IllegalArgumentException("should not get null func")
         }
         this.transformer = transformer
     }

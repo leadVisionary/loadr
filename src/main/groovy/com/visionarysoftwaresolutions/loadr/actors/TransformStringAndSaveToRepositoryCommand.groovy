@@ -24,7 +24,7 @@ final class TransformStringAndSaveToRepositoryCommand<T> implements Command<Stri
         }
         this.log = logFile
         if (transformer == null) {
-            throw new IllegalArgumentException("should not get null transformer")
+            throw new IllegalArgumentException("should not get null func")
         }
         this.transformer = transformer
     }

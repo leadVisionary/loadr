@@ -12,7 +12,7 @@ final class SendLinesOfFileToActorCommand implements Command<File> {
 
     SendLinesOfFileToActorCommand(final StaticDispatchActor<String> transformer) {
         if (transformer == null) {
-            throw new IllegalArgumentException("should not get null transformer")
+            throw new IllegalArgumentException("should not get null func")
         }
         this.transformer = transformer
     }

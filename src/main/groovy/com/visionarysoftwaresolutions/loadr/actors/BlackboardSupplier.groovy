@@ -6,7 +6,7 @@ import groovyx.gpars.actor.StaticDispatchActor
 import java.util.function.Supplier
 
 @Immutable
-class BlackboardSupplier<T> implements Supplier<CloseableRepository<T>> {
+final class BlackboardSupplier<T> implements Supplier<CloseableRepository<T>> {
     private final Supplier<StaticDispatchActor<T>> supplier
 
     @Override

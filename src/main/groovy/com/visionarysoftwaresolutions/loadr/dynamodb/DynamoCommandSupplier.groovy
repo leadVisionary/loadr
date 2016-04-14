@@ -12,22 +12,22 @@ import java.util.function.Supplier
 
 final class DynamoCommandSupplier<T> implements Supplier<Command<T>> {
     private final Logger log
-    private final Function<T, PutItemRequest> transformer
+    private final Function<T, PutItemRequest> func
 
-    DynamoCommandSupplier(final Logger log, final Function<T, PutItemRequest> transformer) {
+    DynamoCommandSupplier(final Logger log, final Function<T, PutItemRequest> func) {
         if (log == null) {
             throw new IllegalArgumentException("should not get null log")
         }
         this.log = log
-        if (transformer == null) {
-            throw new IllegalArgumentException("should not get null transformer")
+        if (func == null) {
+            throw new IllegalArgumentException("should not get null func")
         }
-        this.transformer = transformer
+        this.func = func
     }
 
     @Override
     Command<T> get() {
         final AmazonDynamoDB db = new AmazonDynamoDBAsyncClient();
-        new DynamoDBCommand(db, log, transformer)
+        new DynamoDBCommand(db, log, func)
     }
 }

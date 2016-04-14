@@ -13,7 +13,7 @@ final class CommandingActor<T> extends StaticDispatchActor<T> {
         this(command,new DefaultPGroup(new DefaultPool(true, 1)))
     }
 
-    protected CommandingActor(final Command<T> command,
+    CommandingActor(final Command<T> command,
                               final PGroup group) {
         if (command == null) {
             throw new IllegalArgumentException("should not get null command")
