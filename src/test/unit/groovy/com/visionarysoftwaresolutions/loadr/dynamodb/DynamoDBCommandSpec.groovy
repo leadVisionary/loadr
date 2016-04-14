@@ -7,7 +7,7 @@ import org.slf4j.Logger
 
 import java.util.function.Function
 
-class DynamoDBPublishCommandSpec extends spock.lang.Specification {
+class DynamoDBCommandSpec extends spock.lang.Specification {
 
     def "rejects null constructor arguments"() {
         when: "I try to construct with null client"
