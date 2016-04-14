@@ -3,17 +3,33 @@ package com.visionarysoftwaresolutions.loadr.actors.transform
 import com.visionarysoftwaresolutions.loadr.api.CloseableRepository
 import com.visionarysoftwaresolutions.loadr.api.Command
 
-import groovy.transform.Immutable
 import org.slf4j.Logger
 
 import java.util.function.Function
 import java.util.function.Supplier
 
-@Immutable
+
 public final class StringTransformCommandSupplier<T> implements Supplier<Command<String>> {
     private final Supplier<CloseableRepository<T>> supplier
     private final Logger log
     private final Function<String, T> stringTransform
+
+    StringTransformCommandSupplier(final Supplier<CloseableRepository<T>> supplier,
+                                   final Logger log,
+                                   final Function<String, T> stringTransform) {
+        if (supplier == null) {
+            throw new IllegalArgumentException("should not get null supplier")
+        }
+        this.supplier = supplier
+        if (log == null) {
+            throw new IllegalArgumentException("should not get null log")
+        }
+        this.log = log
+        if (stringTransform == null) {
+            throw new IllegalArgumentException("should not get null stringTransform")
+        }
+        this.stringTransform = stringTransform
+    }
 
     @Override
     Command<String> get() {
