@@ -69,7 +69,6 @@ public final class StreamBasedLoadFromFileCommand<T,U> implements Command<File> 
             public ForkJoinWorkerThread newThread(ForkJoinPool pool) {
                 final ForkJoinWorkerThread thread = ForkJoinPool.defaultForkJoinWorkerThreadFactory.newThread(pool);
                 thread.setName(String.format("ETL-thread-%d", count));
-                thread.setDaemon(true);
                 count = count +1;
                 return thread;
             }
