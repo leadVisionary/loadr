@@ -3,11 +3,12 @@ package com.visionarysoftwaresolutions.loadr.actors
 import com.visionarysoftwaresolutions.loadr.actors.extract.FileCommandSupplier
 import com.visionarysoftwaresolutions.loadr.actors.extract.LoadFromFileViaActorsCommand
 import com.visionarysoftwaresolutions.loadr.actors.store.BlackboardSupplier
-import com.visionarysoftwaresolutions.loadr.actors.store.SubscriberSupplier
+import com.visionarysoftwaresolutions.loadr.actors.store.RandomlySelectingActorPool
 import com.visionarysoftwaresolutions.loadr.actors.transform.StringTransformCommandSupplier
 import com.visionarysoftwaresolutions.loadr.api.CloseableRepository
 import com.visionarysoftwaresolutions.loadr.api.Command
 import com.visionarysoftwaresolutions.loadr.dynamodb.DynamoCommandSupplier
+import groovyx.gpars.actor.StaticDispatchActor
 import org.slf4j.Logger
 
 import java.util.function.Function
@@ -44,12 +45,13 @@ public final class ActorBasedFileProcessingCommandSupplier<T,U> implements Suppl
 
     @Override
     Command<File> get() {
-        def subscriberSupplier = new SubscriberSupplier(publishers, new DynamoCommandSupplier(log, mapper))
-        final Supplier<CloseableRepository<T>> blah = new BlackboardSupplier<T>(subscriberSupplier)
-        final Supplier<Command<String>> sup = new StringTransformCommandSupplier<>(blah, log, stringTransform)
-        final Supplier<Command<File>> fSup = new FileCommandSupplier(new CommandBasedActorSupplier(sup))
+        final Supplier<StaticDispatchActor<T>> dynamo = new CommandBasedActorSupplier<T>(new DynamoCommandSupplier(log, mapper))
+        final Supplier<StaticDispatchActor<T>> savers = new RandomlySelectingActorPool(publishers, dynamo)
+        final Supplier<CloseableRepository<T>> repo = new BlackboardSupplier<T>(savers)
+        final Supplier<Command<String>> transform = new StringTransformCommandSupplier<>(repo, log, stringTransform)
+        final Supplier<Command<File>> file = new FileCommandSupplier(new CommandBasedActorSupplier(transform))
 
-        def supplier = new CommandBasedActorSupplier(fSup)
+        def supplier = new CommandBasedActorSupplier(file)
 
         def command = new LoadFromFileViaActorsCommand(supplier)
         command
