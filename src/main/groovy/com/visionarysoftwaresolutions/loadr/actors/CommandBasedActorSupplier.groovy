@@ -24,5 +24,5 @@ public abstract class CommandBasedActorSupplier<T> implements Supplier<StaticDis
         return getActor(transformer)
     }
 
-    abstract StaticDispatchActor<T> getActor(Command<T> transformer)
+    abstract StaticDispatchActor<T> getActor(Command<T> command)
 }

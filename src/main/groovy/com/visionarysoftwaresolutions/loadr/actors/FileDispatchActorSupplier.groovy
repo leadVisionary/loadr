@@ -10,7 +10,7 @@ final class FileDispatchActorSupplier extends CommandBasedActorSupplier<File> {
     }
 
     @Override
-    StaticDispatchActor<File> getActor(Command<File> transformer) {
-        new CommandingActor<File>(transformer)
+    StaticDispatchActor<File> getActor(Command<File> command) {
+        new CommandingActor<File>(command)
     }
 }
