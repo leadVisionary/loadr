@@ -12,7 +12,13 @@ public final class LoadSingleIntoDynamo<T> implements Function<T, PutItemResult>
 
     public LoadSingleIntoDynamo(final AmazonDynamoDB client,
                                 final  Function<T, PutItemRequest> transformer) {
+        if (client == null) {
+            throw new IllegalArgumentException("should not get null client")
+        }
         this.client = client
+        if (transformer == null) {
+            throw new IllegalArgumentException("should not get null transformer")
+        }
         this.transformer = transformer
     }
 
