@@ -1,5 +1,6 @@
 package com.visionarysoftwaresolutions.loadr.streams
 
+import com.visionarysoftwaresolutions.loadr.Fixtures
 import org.slf4j.Logger
 import streams.StreamBasedLoadFromFileCommand
 
@@ -37,9 +38,7 @@ class StreamBasedLoadFromFileCommandSpec extends spock.lang.Specification {
         and: "A StreamBasedLoadFromFileCommand to test"
             StreamBasedLoadFromFileCommand<String, Integer> toTest = new StreamBasedLoadFromFileCommand<>(log, publishers, e,t,l)
         and: "A File to be processed"
-            File temp = Files.createTempFile(Paths.get(System.getProperty("user.dir")), "foo", "bar").toFile()
-            temp.write("1 cool dudebro\n2 lame brodawg")
-            temp.deleteOnExit()
+            File temp = Fixtures.tempFile()
         when: "I execute the Command by passing the file"
             toTest.execute(temp)
         then: "each line of the file has the extract function applied"

@@ -29,7 +29,7 @@ class LoadFromActorsSpecification extends spock.lang.Specification {
         given: "A file containing data"
             File input = Paths.get(System.getProperty("user.dir"), "src", "test", "resources", "test_data.csv").toFile()
         and: "a function to act on that file"
-            Function<File, Stream<String>> process = new ReturnNonEmptyDistinctSortedLines()
+            Function<File, Stream<String>> process = new ReturnNonEmptyDistinctLines()
         and: "a Supplier that has a function which gets that file"
             fileActorSupplier = new Supplier<StaticDispatchActor<File>>() {
                 @Override
