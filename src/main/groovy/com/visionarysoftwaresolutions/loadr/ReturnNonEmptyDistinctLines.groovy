@@ -1,7 +1,6 @@
 package com.visionarysoftwaresolutions.loadr
 
 import java.nio.file.Files
-import java.text.Collator
 import java.util.function.Function
 import java.util.stream.Stream
 
@@ -15,11 +14,7 @@ public final class ReturnNonEmptyDistinctLines implements Function<File, Stream<
         if (!file.exists() || !file.isFile()) {
             throw new IllegalArgumentException("should only get a file with lines")
         }
-        final Stream<String> lines = Files.lines(file.toPath())
-
-        final def collator = Collator.getInstance()
-        collator.strength == Collator.TERTIARY
-        lines.parallel().filter {
+        Files.lines(file.toPath()).parallel().filter {
             !(it.isEmpty() || it.isAllWhitespace())
         }.distinct()
     }

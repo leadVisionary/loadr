@@ -5,24 +5,23 @@ import com.visionarysoftwaresolutions.loadr.api.Command;
 import org.slf4j.Logger;
 
 import java.io.File;
-import java.nio.file.Files;
 import java.util.concurrent.*;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
-public final class StreamBasedLoadFromFileCommand<T,U> implements Command<File> {
+public final class StreamBasedLoadFromFileCommand<T> implements Command<File> {
     private final Logger log;
     private final int publishers;
-    private final Function<String, T> extract;
-    private final Function<T, U> transform;
-    private final Function<U, String> load;
+    private final Function<File, Stream<String>> extract;
+    private final Function<String, T> transform;
+    private final Function<T, String> load;
 
 
     public StreamBasedLoadFromFileCommand(final Logger log,
                                           final int publishers,
-                                          final Function<String, T> extract,
-                                          final Function<T, U> transform,
-                                          final Function<U, String> load
+                                          final Function<File, Stream<String>> extract,
+                                          final Function<String, T> transform,
+                                          final Function<T, String> load
                                           ) {
         if (log == null) {
             throw new IllegalArgumentException("log should not be null");
@@ -50,21 +49,16 @@ public final class StreamBasedLoadFromFileCommand<T,U> implements Command<File> 
     public void execute(final File parameter) {
         final ForkJoinPool loadPool = new ForkJoinPool(publishers, loadThreadFactory(), loadExceptionHandler(log), true);
         try {
-            final Stream<String> lines = Files.lines(parameter.toPath());
-            final long written = loadPool.submit(applyETL(lines)).get();
+            final long written = loadPool.submit(() ->
+                    extract.apply(parameter)
+                    .parallel()
+                    .map(transform)
+                    .map(load)
+                    .count()).get();
             log.info(String.format("%nWrote out %d records for %s%n", written, parameter.getAbsolutePath()));
         } catch (Exception e) {
             log.error("died while waiting", e);
         }
-    }
-
-    private Callable<Long> applyETL(final Stream<String> lines) {
-        return () -> lines
-                .parallel()
-                .map(extract)
-                .map(transform)
-                .map(load)
-                .count();
     }
 
     private Thread.UncaughtExceptionHandler loadExceptionHandler(final Logger log) {
