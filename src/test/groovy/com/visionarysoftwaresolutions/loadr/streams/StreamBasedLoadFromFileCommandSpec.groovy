@@ -7,6 +7,7 @@ import streams.StreamBasedLoadFromFileCommand
 import java.nio.file.Files
 import java.nio.file.Paths
 import java.util.function.Function
+import java.util.stream.Stream
 
 class StreamBasedLoadFromFileCommandSpec extends spock.lang.Specification {
 
@@ -30,7 +31,7 @@ class StreamBasedLoadFromFileCommandSpec extends spock.lang.Specification {
         and: "A desired parallelism"
             int publishers = 1
         and: "An Extract Function"
-            Function<String, String> e = Mock(Function)
+            Function<File, String> e = Mock(Function)
         and: "A Transform Function"
             Function<String, Integer> t = Mock(Function)
         and: "A Load Function"
@@ -42,11 +43,11 @@ class StreamBasedLoadFromFileCommandSpec extends spock.lang.Specification {
         when: "I execute the Command by passing the file"
             toTest.execute(temp)
         then: "each line of the file has the extract function applied"
-            2 * e.apply(_ as String) >> { "foo" }
+            1 * e.apply(temp) >> { Stream.of(temp.readLines()) }
         and: "the result of extract is passed to transform"
-            2 * t.apply(_ as String) >> { 42 }
+            1 * t.apply(['1 cool dudebro', '2 lame brodawg']) >> { [1, 2] }
         and: "the result of transform is passed to load"
-            2 * l.apply(_ as Integer) >> "bar"
+            1 * l.apply([1, 2])
         and: "the log is written to"
             1 * log.info(_ as String)
     }
